@@ -21,8 +21,11 @@ jobs:
           bundler: "Gemfile.lock"
           bundler-cache: true
           cache-version: 0 # Increment this number if you need to re-download cached gems
+      - name: Setup Pages (baseurl 세팅)
+        id: pages
+        uses: actions/configure-pages@v5
       - name: Build with Jekyll
-        run: bundle exec jekyll build -d _site
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}" -d _site
         env:
           JEKYLL_ENV: production
       - name: Remove GitHub meta files (README, CODEOWNERS)
