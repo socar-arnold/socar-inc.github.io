@@ -25,7 +25,10 @@ jobs:
         run: bundle exec jekyll build -d _site
         env:
           JEKYLL_ENV: production
-
+      - name: Remove GitHub meta files (README, CODEOWNERS)
+        run: |
+          rm -f _site/README.md
+          rm -f _site/CODEOWNERS
       - name: Check for symlinks (디버그용)
         run: |
           find _site -type l -ls

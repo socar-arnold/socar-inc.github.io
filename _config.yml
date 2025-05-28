@@ -43,4 +43,5 @@ exclude:
   - tmp
   - .cache
   - "*.log"
-  
+  - README.md
+  - CODEOWNERS
