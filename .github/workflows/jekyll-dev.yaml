@@ -34,6 +34,9 @@ jobs:
           find _site -type f -links +1 -ls
       - name: Check _site size (디버그용)
         run: du -sh _site
+      - name: List _site contents (디버그용)
+        run: |
+          find _site | sort
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
