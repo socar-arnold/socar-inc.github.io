@@ -1,4 +1,3 @@
-````markdown
 ---
 layout: post
 title: "turborepo와 함게하는 CI 파이프라인 개선하기"
@@ -111,7 +110,6 @@ Runner 성능 개선 이후에도 30여 개의 Next.js 프로젝트 빌드에 10
 	  if: steps.changes.outputs.with_build == 'true'
 	  run: pnpm build
 ```
-````
 
 이 방식은 turbo의 원격 캐시 서버를 활용하지만, 빌드 과정을 병렬 처리하거나 가시성을 확보하는 데는 한계가 있었습니다.
 
