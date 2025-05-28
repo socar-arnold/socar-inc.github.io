@@ -41,9 +41,8 @@ jobs:
         run: |
           find _site | sort
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages
           path: _site
 
   deployPreview:
