@@ -28,6 +28,11 @@ jobs:
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}" -d _site
         env:
           JEKYLL_ENV: production
+      - name: Fix absolute /img/ paths in _site
+        run: |
+          BASEURL="${{ steps.pages.outputs.base_path }}"
+          find _site -type f -name "*.html" -exec sed -i "s|src=\"/img/|src=\"${BASEURL}/img/|g" {} +
+          find _site -type f -name "*.html" -exec sed -i "s|href=\"/img/|href=\"${BASEURL}/img/|g" {} +
       - name: Remove GitHub meta files (README, CODEOWNERS)
         run: |
           rm -f _site/README.md
