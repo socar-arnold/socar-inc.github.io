@@ -20,10 +20,20 @@ jobs:
           ruby-version: 3.3.4
           bundler: "Gemfile.lock"
           bundler-cache: true
-
+          cache-version: 0 # Increment this number if you need to re-download cached gems
       - name: Build with Jekyll
         run: bundle exec jekyll build -d _site
+        env:
+          JEKYLL_ENV: production
 
+      - name: Check for symlinks (디버그용)
+        run: |
+          find _site -type l -ls
+      - name: Check for hard links (디버그용)
+        run: |
+          find _site -type f -links +1 -ls
+      - name: Check _site size (디버그용)
+        run: du -sh _site
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
