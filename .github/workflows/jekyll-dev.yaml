@@ -32,8 +32,9 @@ jobs:
         run: |
           BASEURL="${{ steps.pages.outputs.base_path }}"
           find _site -type f -name "*.html" -exec sed -i "s|src=\"/img/|src=\"${BASEURL}/img/|g" {} +
-          find _site -type f -name "*.html" -exec sed -i "s|src=\"/assets/|href=\"${BASEURL}/assets/|g" {} +
+          find _site -type f -name "*.html" -exec sed -i "s|src=\"/assets/|src=\"${BASEURL}/assets/|g" {} +
           find _site -type f -name "*.html" -exec sed -i "s|href=\"/img/|href=\"${BASEURL}/img/|g" {} +
+          find _site -type f -name "*.html" -exec sed -i "s|href=\"/assets/|href=\"${BASEURL}/assets/|g" {} +
       - name: Remove GitHub meta files (README, CODEOWNERS)
         run: |
           rm -f _site/README.md
