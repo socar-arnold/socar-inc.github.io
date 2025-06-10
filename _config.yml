@@ -32,3 +32,16 @@ kramdown:
   input: GFM
   auto_ids: true
   syntax_highlighter: rouge
+
+# 기타_불필요_폴더_또는_파일 제거
+exclude:
+  - node_modules
+  - .git
+  - .github
+  - .DS_Store
+  - vendor
+  - tmp
+  - .cache
+  - "*.log"
+  - README.md
+  - CODEOWNERS

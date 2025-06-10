@@ -1,0 +1,93 @@
+name: Preview Jekyll site for PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [master]
+
+jobs:
+  buildAndPreview:
+    if: github.event.pull_request.base.ref == 'master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3.4
+          bundler: "Gemfile.lock"
+          bundler-cache: true
+          cache-version: 0 # Increment this number if you need to re-download cached gems
+      - name: Setup Pages (baseurl 세팅)
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Build with Jekyll
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}" -d _site
+        env:
+          JEKYLL_ENV: production
+      - name: Fix absolute /img/ paths in _site
+        run: |
+          BASEURL="${{ steps.pages.outputs.base_path }}"
+          find _site -type f -name "*.html" -exec sed -i "s|src=\"/img/|src=\"${BASEURL}/img/|g" {} +
+          find _site -type f -name "*.html" -exec sed -i "s|src=\"/assets/|src=\"${BASEURL}/assets/|g" {} +
+          find _site -type f -name "*.html" -exec sed -i "s|href=\"/img/|href=\"${BASEURL}/img/|g" {} +
+          find _site -type f -name "*.html" -exec sed -i "s|href=\"/assets/|href=\"${BASEURL}/assets/|g" {} +
+      - name: Remove GitHub meta files (README, CODEOWNERS)
+        run: |
+          rm -f _site/README.md
+          rm -f _site/CODEOWNERS
+      - name: Check for symlinks (디버그용)
+        run: |
+          find _site -type l -ls
+      - name: Check for hard links (디버그용)
+        run: |
+          find _site -type f -links +1 -ls
+      - name: Check _site size (디버그용)
+        run: du -sh _site
+      - name: List _site contents (디버그용)
+        run: |
+          find _site | sort
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deployPreview:
+    needs: buildAndPreview
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: _site
+
+      - name: Deploy to GitHub Pages (Preview)
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          preview: true
+
+      - name: Comment PR with preview url
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const previewUrl = process.env.DEPLOYMENT_PREVIEW_URL || '${{ steps.deployment.outputs.page_url }}';
+            const prNumber = context.payload.pull_request.number;
+            const body = `🚀 미리보기: [Preview Link](${previewUrl})`;
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: prNumber,
+              body
+            });
+        env:
+          DEPLOYMENT_PREVIEW_URL: ${{ steps.deployment.outputs.page_url }}
