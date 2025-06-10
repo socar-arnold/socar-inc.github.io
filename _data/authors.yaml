@@ -288,3 +288,12 @@ rudy:
   introduction: 쏘카에서 데이터 엔지니어링 업무를 하고 있습니다.
   links:
     linkedin: 'https://www.linkedin.com/in/yangseunghyeon/'
+
+arnold:
+  name: 아놀드
+  image: '/assets/authors/arnold.png'
+  position: FE CORE 팀 프론트엔드 개발자
+  introduction: 쏘카의 프론트엔드 공통역역 개발을 하고 있습니다.
+  links:
+    blog: "https://www.cloud-sanghun.com/"
+    linkedin: "https://www.linkedin.com/in/sanghun-lee-905a84144/"
