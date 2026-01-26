@@ -289,6 +289,8 @@ rudy:
   links:
     linkedin: 'https://www.linkedin.com/in/yangseunghyeon/'
 
+
+
 arnold:
   name: 아놀드
   image: '/assets/authors/arnold.png'
@@ -321,4 +323,3 @@ aron:
   introduction: 바람직한 체계를 구축하고 그로부터 다수의 행복에 기여할 수 있는 선순환을 만드는 것을 추구합니다.
   links:
     linkedin: 'https://www.linkedin.com/in/dongheekim85/'
-
